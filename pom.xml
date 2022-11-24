@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.6.RELEASE</version>
+    </parent>
+
+    <description>Cellular-Z-Server</description>
+
+    <groupId>com.cellular.z.server</groupId>
+    <artifactId>cellular-z-server</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <app.name>${project.artifactId}</app.name>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <slf4j.version>1.7.25</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <lombok.version>1.16.20</lombok.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!--log相关-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!--log4j会由log4j-over-slf4j替代，从而转为slf4j输出日志-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!--commons-logging会由jcl-over-slf4j替代，从而转为slf4j输出日志-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!--logback-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <!-- org.apache.commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+        </dependency>
+        <!--CSV-->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+        <!-- okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>2.2.6.RELEASE</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/profiles/local</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.cellular.z.server.CellularCollectServer</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- 本地 -->
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <id>local</id>
+            <properties>
+                <package.env>local</package.env>
+            </properties>
+        </profile>
+
+        <!-- 线上环境 -->
+        <profile>
+            <id>pro</id>
+            <properties>
+                <package.env>pro</package.env>
+            </properties>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <repository>
+            <id>ali-maven</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>

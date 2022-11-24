@@ -1,0 +1,7 @@
+
+#服务部署端口
+server.port=8088
+
+#日志存放文件夹
+logging.path=appLogs
+

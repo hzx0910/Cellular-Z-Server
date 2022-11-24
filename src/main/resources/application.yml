@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: @package.env@
+    include: base
+
+logging:
+  path: appLogs
+
+server:
+  port: 8088
